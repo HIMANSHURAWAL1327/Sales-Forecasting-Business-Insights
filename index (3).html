@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sales Dashboard and Forecast</title>
+<link rel="stylesheet" href="style.css">
+<!-- SheetJS: reads Excel files in the browser (CSV files need no library) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+<main>
+  <h1>Sales dashboard and forecast</h1>
+  <p class="sub">Upload your sales file, check the column choices, and see the next months of sales with a likely range.</p>
+
+  <!-- 1. Upload -->
+  <section class="box">
+    <div class="row">
+      <label>Sales file (CSV or Excel)<input type="file" id="file" accept=".csv,.xlsx,.xls"></label>
+      <button class="ghost" id="sample">Use sample data</button>
+    </div>
+    <p id="err" role="alert"></p>
+  </section>
+
+  <!-- 2. Controls (shown after data is loaded) -->
+  <section class="box" id="ctl" hidden>
+    <div class="row">
+      <label>Date column<select id="cDate"></select></label>
+      <label>Sales column<select id="cSales"></select></label>
+      <label>Filter by<select id="cFilt"></select></label>
+      <label>Value<select id="vFilt"></select></label>
+      <label>Region column<select id="cReg"></select></label>
+      <label>Category column<select id="cCat"></select></label>
+      <label>Product column<select id="cProd"></select></label>
+      <label>Months ahead<select id="hz"><option>3</option><option selected>6</option><option>12</option></select></label>
+    </div>
+  </section>
+
+  <!-- 3. Results -->
+  <div id="out" hidden>
+    <section class="box"><p class="big" id="head"></p><p class="mute" id="note"></p></section>
+    <section class="box chart"><svg id="svg" viewBox="0 0 760 320" role="img" aria-label="Monthly sales with forecast"></svg></section>
+    <section class="box">
+      <p class="big">Where sales come from</p>
+      <div class="grid3">
+        <div><p class="mute"><b>By region</b></p><div id="bReg"></div></div>
+        <div><p class="mute"><b>By category</b></p><div id="bCat"></div></div>
+        <div><p class="mute"><b>Top 10 products</b></p><div id="bProd"></div></div>
+      </div>
+    </section>
+    <section class="box"><p class="big">Business insights</p><ul id="ins"></ul></section>
+    <section class="box"><p class="big">Accuracy check</p><p class="mute" id="acc"></p></section>
+    <section class="box tw">
+      <table>
+        <thead><tr><th>Month</th><th>Low</th><th>Expected</th><th>High</th></tr></thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </section>
+    <section class="box">
+      <p class="big">How it works</p>
+      <p class="mute">Sales are added up month by month. A straight trend line shows whether sales are rising or falling. With 24 or more months of data, the tool also learns which months are usually busy or slow and adjusts for that. The low and high values cover about 80% of the typical errors seen in the past data.</p>
+    </section>
+  </div>
+</main>
+
+<!-- Scripts load in this order: each file uses functions from the ones above it -->
+<script src="utils.js"></script>
+<script src="data.js"></script>
+<script src="forecast.js"></script>
+<script src="charts.js"></script>
+<script src="insights.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
